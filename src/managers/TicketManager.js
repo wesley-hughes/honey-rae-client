@@ -1,7 +1,7 @@
 import { getToken } from "../utils/getToken"
 
 export const getTicketById = (id) => {
-  return fetch(`http://localhost:8000/tickets/${id}`, {
+  return fetch(`http://localhost:8000/serviceTickets/${id}`, {
     headers: {
       Authorization: `Token ${getToken()}`
     }
@@ -10,7 +10,7 @@ export const getTicketById = (id) => {
 }
 
 export const addTicket = (ticket) => {
-  return fetch("http://localhost:8000/tickets", {
+  return fetch("http://localhost:8000/serviceTickets", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export const addTicket = (ticket) => {
 }
 
 export const getAllTickets = () => {
-  return fetch("http://localhost:8000/tickets", {
+  return fetch("http://localhost:8000/serviceTickets", {
     headers: {
       Authorization: `Token ${getToken()}`
     }
@@ -31,7 +31,7 @@ export const getAllTickets = () => {
 }
 
 export const searchTicketsByStatus = (status) => {
-  return fetch(`http://localhost:8000/tickets?status=${status}`, {
+  return fetch(`http://localhost:8000/serviceTickets?status=${status}`, {
     headers: {
       Authorization: `Token ${getToken()}`
     }
@@ -40,7 +40,7 @@ export const searchTicketsByStatus = (status) => {
 }
 
 export const updateTicket = (ticket) => {
-  return fetch(`http://localhost:8000/tickets/${ticket.id}`, {
+  return fetch(`http://localhost:8000/serviceTickets/${ticket.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const updateTicket = (ticket) => {
 }
 
 export const deleteTicket = (id) => {
-  return fetch(`http://localhost:8000/tickets/${id}`, {
+  return fetch(`http://localhost:8000/serviceTickets/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Token ${getToken()}`

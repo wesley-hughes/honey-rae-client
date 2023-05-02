@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { isStaff } from "../../utils/isStaff"
 import { getAllEmployees } from "../../managers/EmployeeManager"
 import { getTicketById, deleteTicket, updateTicket } from "../../managers/TicketManager"
+import { ticketStatus } from "./TicketToolbox"
 
 export const Ticket = () => {
   const [ticket, setTicket] = useState({})
@@ -41,15 +42,15 @@ export const Ticket = () => {
     updateTicket(updatedTicket).then(() => fetchTicket())
   }
 
-  const ticketStatus = () => {
-    if (ticket.date_completed === null) {
-      if (ticket.employee) {
-        return <span className="status--in-progress">In progress</span>
-      }
-      return <span className="status--new">Unclaimed</span>
-    }
-    return <span className="status--completed">Done</span>
-  }
+  // const ticketStatus = () => {
+  //   if (ticket.date_completed === null) {
+  //     if (ticket.employee) {
+  //       return <span className="status--in-progress">In progress</span>
+  //     }
+  //     return <span className="status--new">Unclaimed</span>
+  //   }
+  //   return <span className="status--completed">Done</span>
+  // }
 
   const employeePicker = () => {
     if (isStaff()) {
@@ -86,7 +87,7 @@ export const Ticket = () => {
             }
           </div>
           <div className="footerItem">
-            {ticketStatus()}
+            {ticketStatus(ticket)}
           </div>
           {
             isStaff()

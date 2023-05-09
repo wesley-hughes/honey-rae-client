@@ -41,6 +41,33 @@ export const Ticket = () => {
 
     updateTicket(updatedTicket).then(() => fetchTicket())
   }
+  const doneTicketEvent = (evt) => {
+    function formatDate(date) {
+      const d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    
+      let updatedMonth = month;
+      let updatedDay = day;
+    
+      if (month.length < 2) updatedMonth = '0' + month;
+      if (day.length < 2) updatedDay = '0' + day;
+    
+      return [year, updatedMonth, updatedDay].join('-');
+    }
+    
+    
+    const formattedDate = formatDate(new Date());
+ 
+  
+    // Use a local variable for the modified ticket
+    let completedTicket = {...ticket};
+    completedTicket.date_completed = formattedDate;
+  
+    updateTicket(completedTicket)
+  };
+
 
   // const ticketStatus = () => {
   //   if (ticket.date_completed === null) {
@@ -51,25 +78,58 @@ export const Ticket = () => {
   //   }
   //   return <span className="status--completed">Done</span>
   // }
+  const isTicketCompleted = () => {
+    return ticket.date_completed !== null;
+  }
+  
 
+  // const employeePicker = () => {
+  //   if (isStaff()) {
+  //     return <div className="ticket__employee">
+  //       <label>Assign to:</label>
+  //       <select
+  //         value={ticket.employee?.id}
+  //         onChange={updateTicketEvent}>
+  //         <option value="0">Choose...</option>
+  //         {
+  //           employees.map(e => <option key={`employee--${e.id}`} value={e.id}>{e.full_name}</option>)
+  //         }
+  //       </select>
+  //       <button onClick={doneTicketEvent}>Mark Done</button>
+  //     </div>
+  //   }
+  //   else {
+  //     return <div className="ticket__employee">Assigned to {ticket.employee?.full_name ?? "no one"}</div>
+  //   }
+  // }
   const employeePicker = () => {
     if (isStaff()) {
-      return <div className="ticket__employee">
-        <label>Assign to:</label>
-        <select
-          value={ticket.employee?.id}
-          onChange={updateTicketEvent}>
-          <option value="0">Choose...</option>
-          {
-            employees.map(e => <option key={`employee--${e.id}`} value={e.id}>{e.full_name}</option>)
-          }
-        </select>
-      </div>
+      return (
+        <div className="ticket__employee">
+          <label>Assign to:</label>
+          <select
+            value={ticket.employee?.id}
+            onChange={updateTicketEvent}
+          >
+            <option value="0">Choose...</option>
+            {employees.map((e) => (
+              <option key={`employee--\${e.id}`} value={e.id}>
+                {e.full_name}
+              </option>
+            ))}
+          </select>
+          {!isTicketCompleted() && <button onClick={doneTicketEvent}>Mark Done</button>}
+        </div>
+      );
+    } else {
+      return (
+        <div className="ticket__employee">
+          Assigned to {ticket.employee?.full_name ?? "no one"}
+        </div>
+      );
     }
-    else {
-      return <div className="ticket__employee">Assigned to {ticket.employee?.full_name ?? "no one"}</div>
-    }
-  }
+  };
+  
 
   return (
     <>
@@ -92,7 +152,7 @@ export const Ticket = () => {
           {
             isStaff()
               ? <></>
-              : <button onClick={deleteTicketEvent}>Delete</button>
+              : <><button onClick={deleteTicketEvent}>Delete</button></>
           }
         </footer>
 
